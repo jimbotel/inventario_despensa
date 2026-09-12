@@ -1,0 +1,6 @@
+# Secretos — nunca commitear
+.env
+.env.local
+
+# Bob MCP config (contiene secretos)
+.bob/mcp.json

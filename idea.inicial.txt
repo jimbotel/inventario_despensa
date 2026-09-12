@@ -1,0 +1,47 @@
+Este archivo es el punto de partida de una idea de negocio, un nuevo proyecto cuya intención es desarrollar una aplicación para gestionar el inventario completo de todos los artículos que hay en la nevera y/o en la despensa de una vivienda.
+Con algunas modificaciones el proyecto podría servir para llevar el inventario de los artículos en un almacen de mercancías, de forma que la idea es reutilizable en otros casos.
+
+Los requisitos básicos para la aplicación son los siguientes:
+- Los usuarios de la aplicación son los miembros de la vivienda. 
+- Cada usuario debe poder loguearse de forma independiente.
+- El inventario de cada artículo contempla: 
+   > Un ID (identificador numérico único, no puede ser NULL ni haber duplicados) autogenerado (se crea la primera vez que se añade el artículo y se mantiene a futuro). Campo obligatorio.
+   > El nombre del artículo, texto limitado (20 caracteres). Campo obligatorio.
+   > Una categoría del artículo, un texto, por ejemplo "conservas" (las categorías disponibles se han definido previamente, en principio no es algo modificable). Campo obligatorio.
+   > Una descripción de texto libre (128 caracteres). Campo opcional.
+   > Un campo "booleano" (un "check", algo como "sí" o "no") que indica si el artículo es "básico/primordial", indicando que su inventario no debería estar nunca a cero. Campo obligatorio (por defecto el artículo no es primordial).
+   > El número de unidades que hay en el inventario, un entero (por defecto se inicializa con valor 1). Campo obligatorio.
+   > El identificador del código de barras, vamos a denominarlo barCode para no confundirlo con el ID autogenerado, un alfanumérico (puede tener dígitos y letras). Es un identificador único, no puede haber duplicados. Campo opcional.
+   > Una foto del artículo. Campo opcional.
+- La aplicación debe permitir modificar (incrementar o decrementar) el inventario de cada artículo mediante un formulario desde la propia interfaz web. Para ello, lo primero es permitir hacer una búsqueda por ID, barCode o por nombre/descripción sobre los artículos ya existentes y mostrar de forma dinámica los matches encontrados de forma que pueda seleccionarse uno de ellos si se trata del que se quería modificar (así se evita que haya duplicidades). Casuística:
+  > Si el artículo es seleccionado por el usuario, se mostrarán todos sus campos, siendo el número de unidades actual el único campo editable. En caso de que el número de unidades se ponga a cero (ya no hay stock del mismo), se debe dar la opción de eliminarlo del inventario o dejarlo con un número 0 de unidades (estas dos opciones deben ser visibles explícitamente). Habrá un botón de "actualizar el inventario" como confirmación del cambio.
+  > Si el artículo no es encontrado (se entiende que no existe aún) se mostrará el formulario completo para añadirlo (campos obligatorios y opcionales) y un botón de "añadir artículo" como confirmación de la operación.
+- La aplicación debe permitir consultar el inventario desde la propia interfaz web, mostrando el nombre del artículo, la categoría, la descripción, el tick de si es o no primordial, así como el número de unidades disponibles y la foto si está disponible. La aplicación debe permitir ordenar la lista por cualquiera de las columnas de forma sencilla, así como filtrar por la categoría (mediante un desplegable), por el número de unidades en el inventario (ej: todos los que tengan 1 unidad sólo, o todos los que tienen un inventario menor o igual que "X" unidades), así como hacer búsquedas de texto libre sobre los campos nombre y descripción. El resultado en la web estará "paginado", y debe existir una opción para mostrar 10, 20, 50 (o todos) artículos en cada página. Sería deseable también si pudiera customizarse mostrando/ocultando los campos disponibles de forma dinámica.
+- La aplicación debe mostrar en otro color (por ejemplo en rojo) los artículos que se han quedado con inventario 0. Esto debe ser visible en la consulta general. 
+- Debe existir una consulta específica (seleccionable de forma independiente) que muestre únicamente los artículos que tienen inventario 0. En esta consulta se debe poder filtrar los artículos que son primordiales y los no primordiales, o mostrarlos todos.
+- La aplicación debe contar con una opción de exportar el inventario actual en formato CSV. Antes de realizar la exportación se debe poder filtrar por los campos categoría, si es o no primordial, y por el número de unidades (por ej. exportar sólo los que tengan inventario igual a 0, menor o igual que "X" unidades, o todos).
+- La aplicación debe poder enviar notificaciones periódicas cuando cualquier artículo (o alguno en particular) se queda sin stock.
+- La aplicación debe contar con una API que permita realizar las operaciones anteriores mediante llamana API (sin acudir a la vista web).
+- Debe existir un log común que registre quién hace cada modificación (aumentar o disminuir el inventario de un artículo) y cuándo se ha hecho. Un ejemplo de formato: "timestamp articulo1 +1 usuario2"
+
+Ideas de posibles mejoras a futuro (no se implementarán inicialmente, a menos que veamos que son imprescindibles para el éxito de la idea):
+- Permitir añadir artículos de forma "masiva" desde un archivo CSV. Esto ocurrirá normalmente al principio (para indicar lo que hay en la despensa inicialmente) o después de alguna compra grande. En este caso, se procesará el archivo línea a línea (registro a registro). Casuística:
+  > Si el ID del artículo está definido en el registro, se hará un "update" del inventario buscando por ese identificador. Si la búsqueda es infructuosa (el ID del artículo que está en el registro del archivo CSV no existe en el inventario), ese registro se rechazará y quedará constancia en el log sobre el problema.
+  > Si no está definido el ID, se considera que es un artículo nuevo y se hará un "insert". 
+  Al final del proceso de ingestión masiva, debe quedar registro en el log de la aplicación del número total de registros insertados y actualizados, así como del número total de rechazos. En el caso de los rechazos se escribirá en el log la información completa de cada registro que ha sido rechazado.
+- Incorporar al inventario un histórico de precios de los artículos (cuando estén disponibles) para poder hacer analítica a posteriori (mostrar tendencias). Junto con el precio y la fecha podría incluirse el establecimiento de compra para poder extraer conclusiones sobre dónde es mejor comprarlo.
+- Permitir añadir artículos (uno a uno) a partir de la imagen (obtenida por ejemplo a partir de una fotografía) del código de barras. En este caso, habrá que:
+  > Aplicar OCR para leer el identificador que viene bajo el código de barras, o utilizar alguna librería de reconocmiento de imagen que extraiga ese número a partir de la imagen del código.
+  > Utilizando el identificador (barCode) extraido, realizar una búsqueda sobre el campo del identificador del código de barras (barCode) en el inventario:
+     -- Si hay un match exacto, se mostrarán todos los campos del artículo, siendo el número de unidades actual el único campo editable, de forma que el usuario pueda actualizarlo (incrementar las unidades que ha comprado). Habrá un botón de "actualizar el inventario" como confirmación del cambio.
+     -- Si no hay un match exacto, se permitirá hacer una búsqueda por el ID, nombre/descripción sobre los artículos ya existentes y mostrar de forma dinámica los matches encontrados de forma que pueda seleccionarse uno de ellos si se trata del que se quería modificar. Casuística:
+        -> Si el artículo es seleccionado por el usuario, se mostrarán todos sus campos, siendo el número de unidades actual el único campo editable. Si el artículo ya tiene un valor de barCode que no coincide, se dará la opción de sustituirlo por el extraido de la foto. Si no tiene valor el barCode se rellenará con el extraido de la foto. Habrá un botón de "actualizar el inventario" como confirmación del cambio.
+        -> Si el artículo no es encontrado (se entiende que no existe aún) se mostrará el formulario completo para añadirlo (campos obligatorios y opcionales), rellenando el campo barCode con el extraído de la foto, y habrá un botón de "añadir artículo" como confirmación de la operación.
+- La aplicación debe permitir añadir artículos a partir de la imagen (obtenida por ejemplo a partir de una fotografía) de un ticket del supermercado donde se hizo la compra de los artículos. En este caso, habrá que:
+  > Aplicar OCR para extraer el texto, identificar las líneas de los artículos (nombre y cantidad de cada uno, e incluso el precio tal y como se sugiere en la mejora anterior). 
+  > Realizar una búsqueda en el inventario (mejor "match" posible) sobre el nombre/descripción de los artículos ya existentes, y mostrar una lista al usuario con las sugerencias para que él decida si el match es apropiado (se haría un "update" del registro sumando al inventario el número de unidades del artículo compradas que se incorporan) o si no lo es, en cuyo caso el usuario puede hacer una búsqueda manual para hacer el match él mismo, o incorporar el artículo como nuevo (se haría un "insert" de un nuevo artículo).
+
+
+
+
+

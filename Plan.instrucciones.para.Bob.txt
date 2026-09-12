@@ -1,0 +1,33 @@
+
+El archivo @idea.inicial.txt contiene información sobre una idea de negocio, un posible proyecto de software que quiero validar y, si tiene sentido, crear.
+
+Quiero que me ayudes en todas las fases del proyecto:
+1- En una primera fase necesitaré ayuda de un Asesor de Negocio/Mentor para validar mis hipótesis de mercado y estructurar un modelo de negocio rentable minimizando el riesgo económico. En este proceso en un punto intermedio habré de crear un MVP para el que también necesitaré la ayuda puntual de un Arquitecto de Soluciones TI. 
+2- Una vez completado el proceso completo de validación, pasaré a una segunda fase en que necesitaré ayuda de nuevo de un Arquitecto de Soluciones TI para traducir las necesidades de negocio en un diseño técnico viable, seguro, escalable y con costes de infraestructura claros.
+3- Por último, pasaré a la tercera fase de implementación, en la que necesitaré ayuda de un Product Manager para asegurar que el equipo de desarrollo construya el producto correcto con la calidad adecuada y en los plazos previstos.
+
+Para que me puedas ayudar mejor, he creado en Bob 3 modos custom: asesor-negocio-mentor, arquitecto-soluciones-ti, product-manager.
+
+Algunas instrucciones antes de empezar:
+- Quiero que me sugieras una organización de directorios a crear en este proyecto, de acuerdo con las 3 fases comentadas anteriormente (por ejemplo, podemos crear un subdirectorio para cada una de las fases). Te indico de forma más concreta a continuación los distintos pasos/tareas en los que se va a trabajar en las tres fases:
+    > Fase 1 (con el Asesor Negocio):
+        -- Propuesta de Valor: Cuadrante de la Propuesta de Valor / Frase de la propuesta de valor
+        -- Validación de la Idea a Nivel de Negocio (Lean Startup): Lean Canvas / Entrevistas de problema / Producto Mínimo Viable (MVP)
+        -- Historias de Usuario 
+        -- Traducción de Historias de Usuario a Requisitos de Negocio
+        -- Definición de Atributos de Calidad iniciales 
+    > Fase 2 (con el Arquitecto de Soluciones de TI):
+        -- Visión General y el Alcance: Descripción del Reto / Diagrama de Contexto
+        -- Modelar los Requisitos y Datos: Casos de Uso y Requisitos Funcionales /  Requisitos No Funcionales / Modelo de Datos
+        -- Arquitectura del Sistema: Vistas de Arquitectura y Escenarios / Decisiones Arquitectónicas (ADRs) / Modelo de Componentes e Infraestructura
+        -- Gestión de Riesgos, Organización y Dimensionamiento: RAID / Matriz RACI 
+    > Fase 3 (con el Product Manager): 
+        -- Construir y Gestionar el Backlog de Producto: Traducción a Historias de Usuario Detalladas / Priorización Continua
+        -- Experiencia de Usuario (UX/UI) - Diseño centrado en el cliente 
+        -- Metodología de Trabajo: metodología de trabajo (Scrum/Kanban) / Garantía de Calidad (QA)
+        -- Lanzamiento y Medición (Product Analytics): Estrategia de despliegue / Estrategia de Medición 
+
+- Cada vez que hagas cambios significativos en los archivos de este proyecto, quiero que hagas commit, resumiendo brevemente dichos cambios en el comentario.
+- Quiero que uses el skill "changelog-entry" para mantener un historial de los cambios.
+- Sigue las reglas que he definido en: @.bob\rules\basic_rules.md 
+- Aquellos diagramas que haya que generar los haremos en draw.io en la medida de lo posible.

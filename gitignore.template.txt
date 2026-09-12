@@ -1,0 +1,14 @@
+# === INSTRUCCIONES ===
+# Renombra este archivo a .gitignore en la raíz del proyecto.
+# Luego bórralo.
+#
+# Crea también un archivo .env con este contenido
+# (reemplaza el token por uno nuevo que hayas generado):
+#   GITHUB_PERSONAL_ACCESS_TOKEN=tu_nuevo_token_aqui
+
+# Secretos — nunca commitear
+.env
+.env.local
+
+# Bob MCP config (contiene secretos)
+.bob/mcp.json
